@@ -1,23 +1,9 @@
-version: "3"
+version: '3'
 
 networks:
   mynetwork:
 
 services:
-  loldle-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: loldle-api:latest
-    container_name: loldle-api
-    ports:
-      - "127.0.0.1:8080:8080"
-    restart: unless-stopped
-    environment:
-      - DOCKER_APP_PORT=8080
-    networks:
-      - mynetwork
-
   loldle-mysql:
     build:
       context: ./mysql-docker
@@ -25,7 +11,7 @@ services:
     image: loldle-mysql:latest
     container_name: loldle-mysql
     ports:
-      - "127.0.0.1:3306:3306"
+      - '127.0.0.1:3306:3306'
     restart: unless-stopped
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
@@ -34,8 +20,8 @@ services:
       - loldle-mysql:/var/lib/mysql
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u root --password=$DB_PASSWORD
-      start_period: 5s
-      interval: 5s
+      start_period: 10s
+      interval: 10s
       timeout: 5s
       retries: 10
     networks:
