@@ -76,14 +76,16 @@ def get_all_champions():
 def render_table_as_image(headers, row, guessed_champions, selected_champion, font_path="fonts/seguiemj.ttf", scale=2):
     if not os.path.exists(font_path):
         raise FileNotFoundError(f"La police spécifiée n'a pas été trouvée : {font_path}")
-    font_size = 50 * scale
-    padding = 40 * scale
-    spacing = 20 * scale
-    border_width = 4 * scale
-    header_bg = (230, 230, 250)
-    guessed_bg = (245, 245, 245)
-    answer_bg = (220, 255, 220)
-    border_color = (120, 120, 120)
+    font_size = 40 * scale
+    padding = 30 * scale
+    spacing = 12 * scale
+    border_width = 3 * scale
+    header_bg = (44, 62, 80)  # Bleu foncé
+    header_fg = (255, 255, 255)
+    guessed_bg = (236, 240, 241)  # Gris clair
+    answer_bg = (39, 174, 96)  # Vert
+    answer_fg = (255, 255, 255)
+    border_color = (52, 73, 94)
     font = ImageFont.truetype(font_path, font_size)
 
     # Calculer la largeur de chaque colonne
@@ -97,7 +99,8 @@ def render_table_as_image(headers, row, guessed_champions, selected_champion, fo
                     guessed_champion = get_champions_by_name(guessed_name)
                     if guessed_champion:
                         cell = get_cell_display(headers[i], guessed_champion.get(headers[i], ""), row[i])
-                        max_len = max(max_len, font.getlength(str(cell).encode('utf-16', 'surrogatepass').decode('utf-16')))
+                        max_len = max(max_len,
+                                      font.getlength(str(cell).encode('utf-16', 'surrogatepass').decode('utf-16')))
         col_widths.append(int(max_len + spacing * 2))
 
     table_width = int(sum(col_widths) + padding * 2 + border_width * (len(headers) + 1))
@@ -118,7 +121,10 @@ def render_table_as_image(headers, row, guessed_champions, selected_champion, fo
     draw = ImageDraw.Draw(image)
 
     def draw_cell(x, y, w, h, text, font, fill, bg, border):
-        draw.rectangle([x, y, x + w, y + h], fill=bg, outline=border, width=border_width)
+        # Coins arrondis pour un style moderne
+        radius = int(min(w, h) * 0.18)
+        rect = [x, y, x + w, y + h]
+        draw.rounded_rectangle(rect, radius=radius, fill=bg, outline=border, width=border_width)
         text_w = font.getlength(str(text))
         text_h = font_size
         text_x = x + (w - text_w) / 2
@@ -133,7 +139,7 @@ def render_table_as_image(headers, row, guessed_champions, selected_champion, fo
     x = x0
     y = y0
     for i, header in enumerate(headers):
-        draw_cell(x, y, col_widths[i], row_height, header, font, "black", header_bg, border_color)
+        draw_cell(x, y, col_widths[i], row_height, header, font, header_fg, header_bg, border_color)
         x += col_widths[i] + border_width
 
     # Lignes des champions devinés
