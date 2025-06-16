@@ -279,7 +279,6 @@ class ChampionDropdown(discord.ui.Select):
         self.guessed.append(user_guess)
 
         if user_guess.lower() == self.selected_champion['name'].lower():
-            self.guessed.append(user_guess)
             headers_text = list(self.selected_champion.keys())
             values_text = [
                 get_cell_display(
