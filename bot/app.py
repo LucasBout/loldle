@@ -73,7 +73,9 @@ def get_all_champions():
             cursor.close()
             connection.close()
 
-def render_table_as_image(headers, row, guessed_champions, selected_champion, font_path="seguiemj.ttf", scale=2):
+def render_table_as_image(headers, row, guessed_champions, selected_champion, font_path="fonts/seguiemj.ttf", scale=2):
+    if not os.path.exists(font_path):
+        raise FileNotFoundError(f"La police spécifiée n'a pas été trouvée : {font_path}")
     font_size = 50 * scale
     padding = 40 * scale
     spacing = 20 * scale
