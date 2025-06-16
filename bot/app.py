@@ -277,8 +277,21 @@ class ChampionDropdown(discord.ui.Select):
         self.guessed.append(user_guess)
 
         if user_guess.lower() == self.selected_champion['name'].lower():
+            self.guessed.append(user_guess)
+            headers_text = list(self.selected_champion.keys())
+            values_text = [
+                get_cell_display(
+                    key,
+                    self.selected_champion.get(key, ""),
+                    self.selected_champion[key]
+                ) for key in headers_text
+            ]
+            image_buffer = render_table_as_image(headers_text, values_text, self.guessed, self.selected_champion)
+            file = discord.File(fp=image_buffer, filename="result.png")
             await interaction.response.send_message(
-                f"🎉 Bravo ! Tu as deviné le bon champion : **{user_guess}**", ephemeral=False
+                f"🎉 Bravo ! Tu as deviné le bon champion : **{user_guess}**",
+                file=file,
+                ephemeral=False
             )
             self.view.stop()
         else:
@@ -310,7 +323,6 @@ class ChampionDropdown(discord.ui.Select):
                 view=new_view,
                 ephemeral=False
             )
-
 
 class NextPageButton(discord.ui.Button):
     def __init__(self, view: ChampionGuessView):
