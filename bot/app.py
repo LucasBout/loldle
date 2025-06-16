@@ -188,6 +188,8 @@ def get_cell_display(key, guess_value, target_value, col_width=None):
             label = "Male"
         elif guess_value == 2:
             label = "Female"
+        elif guess_value == 3:
+            label = "Unknown"
         else:
             label = str(guess_value)
         match = guess_value == target_value
