@@ -77,8 +77,8 @@ def render_table_as_image(headers, row, guessed_champions, selected_champion, fo
     if not os.path.exists(font_path):
         raise FileNotFoundError(f"La police spécifiée n'a pas été trouvée : {font_path}")
     font_size = 40 * scale
-    padding = 30 * scale
-    spacing = 12 * scale
+    padding = 50 * scale  # Augmente le padding des cases
+    spacing = 30 * scale
     border_width = 3 * scale
     header_bg = (44, 62, 80)  # Bleu foncé
     header_fg = (255, 255, 255)
